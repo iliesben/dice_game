@@ -87,21 +87,44 @@ def set_player():
     return player_list
 
 
+# returns the list of scores
+def set_score(indexplayer):
+    return 0
 
-def setPlayer(player):
-  Numberplayer = int(input('Enter number player: '))
+def lauch_dice(name):
+    value = 0
+    #print("turn #" + i" --> " + name+" rank #" + rank + ", score " + value)
+    while True:
 
-  for i in range(Numberplayer): 
-     name = input("Enter a name: ")
-     players.append(name) 
+        response = input("\n" + name + " tap y or yes for roll dice!\n").lower()
+        if response in ['y', 'yes']:
+            dice_value_occurrence_list = roll_dice_set(DEFAULT_DICES_NB)
+            value = analyse_score(dice_value_occurrence_list)
+            print(value)
+        else:
+            print("Thanks for playing, Next Player!")
+            return value
+    return value
 
 
-def gameStart():
-  setPlayer(players)
-  for i in players:
-    input( i+ "  tap for roll ")
-    print(i, analyse_score(roll_dice_set(5)))
-  
 
-gameStart()
+def game_start():
+    list_player = set_player()
+    score = [0] * len(list_player)
 
+    for name in list_player:
+        lauch_dice(name)
+
+
+
+
+
+
+
+
+# for i in players:
+#    input(i + "  tap for roll ")
+#   print(i, analyse_score(roll_dice_set(5)))
+
+
+game_start()
