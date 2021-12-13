@@ -52,16 +52,22 @@ def analyse_score(dice_value_occurrence_list):
 
 # print(analyse_score([7, 2, 3, 0, 4, 1]))
 
+players = []
 
-def setPlayer():
-  players = []
+def setPlayer(player):
   Numberplayer = int(input('Enter number player: '))
-  
-  for i in range(Numberplayer):
+
+  for i in range(Numberplayer): 
      name = input("Enter a name: ")
-     players.append(name)
-     print(players)
+     players.append(name) 
 
-setPlayer()
 
+def gameStart():
+  setPlayer(players)
+  for i in players:
+    input( i+ "  tap for roll ")
+    print(i, analyse_score(roll_dice_set(5)))
+  
+
+gameStart()
 
