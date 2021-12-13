@@ -50,4 +50,18 @@ def analyse_score(dice_value_occurrence_list):
     return bonus_score + standard_score, dice_value_occurrence_list
 
 
-print(analyse_score([7, 2, 3, 0, 4, 1]))
+# print(analyse_score([7, 2, 3, 0, 4, 1]))
+
+
+def setPlayer():
+  players = []
+  Numberplayer = int(input('Enter number player: '))
+  
+  for i in range(Numberplayer):
+     name = input("Enter a name: ")
+     players.append(name)
+     print(players)
+
+setPlayer()
+
+
