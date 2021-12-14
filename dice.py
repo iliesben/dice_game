@@ -137,29 +137,46 @@ def lauch_dice(name):
             if dice_remaining<1:
                 print("Thanks next!")
                 return value
+            if nbr_scoring == 0:
+                return value
+
 
             #dice_remaining=dice_remaining + nbr_scoring_dice()
     return value
+
+def ranking_final_score_str(score_dict):
+    str_score = "total score : "
+    for name_player, player_score in score_dict.items():
+        print(type("% s" % player_score))
+        str_score += name_player + "--> " + player_score + " , "
+    return str_score
+
+
+import operator
+def ranking_final_score(player_turn_dict):
+
+    sort_score_dict = sorted(player_turn_dict.items(), key=operator.itemgetter(1), reverse=True)
+
+    return sort_score_dict
+
 
 
 def game_start():
     list_player = set_player()
     indexplayer =0
-    testscoredico = {}
+    score_dict = {}
     score = [0] * len(list_player)
 
     for name in list_player:
          score_player= lauch_dice(name)
          score[indexplayer] = score_player[0]
-         testscoredico[name] = score_player[0]
+         score_dict[name] = score_player[0]
          indexplayer += 1
 
-    print(testscoredico)
-    for cle, value in testscoredico.items():
-        print("total score : " + cle + "--> " + str(value) +"")
 
-    #ranking= sorted(testscoredico)
-    #print(ranking)
+    ranking_final_score_str(score_dict)
+    print(ranking_final_score_str(ranking_final_score_str(score_dict)))
+
 
 
 
