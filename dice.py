@@ -31,11 +31,8 @@ def roll_dice_set(nb_dice_to_roll):
     dice_value_occurrence_list = [0] * NB_DICE_SIDE
     for n in range(nb_dice_to_roll):
         dice_value = random.randint(1, NB_DICE_SIDE)
-
         dice_value_occurrence_list[dice_value - 1] += 1
-    DICE_LIST = dice_value_occurrence_list
     return dice_value_occurrence_list
-
 
 # return a bonus score and the new dice value occurrence without the bonus elements
 def analyse_bonus_score(dice_value_occurrence_list):
@@ -67,7 +64,6 @@ def analyse_score(dice_value_occurrence_list):
     standard_score, dice_value_occurrence_list = analyse_standard_score(dice_value_occurrence_list)
 
     return bonus_score + standard_score, dice_value_occurrence_list
-
 
 # returns the list of players
 def set_player():
