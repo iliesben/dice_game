@@ -110,10 +110,24 @@ def lauch_dice(name):
 
 def game_start():
     list_player = set_player()
+    indexplayer =0
+    testscoredico = {}
     score = [0] * len(list_player)
 
     for name in list_player:
-        lauch_dice(name)
+         score_player= lauch_dice(name)
+         score[indexplayer] = score_player[0]
+         testscoredico[name] = score_player[0]
+         indexplayer += 1
+
+    print(testscoredico)
+    for cle, value in testscoredico.items():
+        print("total score : " + cle + "--> " + str(value) +"")
+
+    #ranking= sorted(testscoredico)
+    #print(ranking)
+
+
 
 
 
