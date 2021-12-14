@@ -1,17 +1,3 @@
-# coding=utf-8
-# ----------------------< Game rules constants  >-----------------------------------------------------------------------
-# Rules can be parametrized by this globals constants
-#
-# Standard Farkle rules :
-#  5 dices with 6 faces
-#  1 & 5 are scoring
-#  1 is scoring 100 pts
-#  5 is scoring 50 pts
-#
-#  Bonus for 3 dices with the same value
-#   3 ace is scoring 1000 pts
-#   3 time the same dice value is scoring 100 pts signal the dice value
-
 # Target total score to win by default
 DEFAULT_TARGET_SCORE = 2000
 
@@ -93,41 +79,29 @@ def set_player():
     return player_list
 
 
-# returns the list of scores
-def set_score(indexplayer):
-    return 0
-
-
 def nbr_scoring_dice(dice_value_list):
-
-
     nbr_scoring_dice = 0
 
-   # score = 0
     for scoring_value, scoring_multiplier in zip(LIST_SCORING_DICE_VALUE, LIST_SCORING_MULTIPLIER):
-        if (dice_value_list[scoring_value - 1] * scoring_multiplier>0):
+        if dice_value_list[scoring_value - 1] * scoring_multiplier > 0:
             nbr_scoring_dice += 1
     for side_value_index, dice_value_occurrence in enumerate(dice_value_list):
         nb_of_bonus = dice_value_occurrence // THRESHOLD_BONUS
         nbr_scoring_dice = nbr_scoring_dice + nb_of_bonus
     return nbr_scoring_dice
 
-
-
-
-def lauch_dice(name):
+def launch_dice(name):
     roll = 1
-    potential_score =0
+    potential_score = 0
     value = 0
     dice_remaining = GAME_MAX_ROLL
-    nbr_scoring=0
-    #print("turn #" + i" --> " + name+" rank #" + rank + ", score " + value)
+    nbr_scoring = 0
     while True:
         while (dice_remaining>0):
-            response = input("\n" + name + " tap y or yes for roll dice! you have").lower()
+            response = input("\n" + name + " tap [y] or [yes] for roll dice! ").lower()
             if response in ['y', 'yes']:
                 dice_value_occurrence_list = roll_dice_set(DEFAULT_DICES_NB)
-                nbr_scoring=nbr_scoring_dice(dice_value_occurrence_list)
+                nbr_scoring = nbr_scoring_dice(dice_value_occurrence_list)
                 value = analyse_score(dice_value_occurrence_list)
 
                 potential_score = potential_score + value[0]
@@ -136,23 +110,22 @@ def lauch_dice(name):
                         dice_remaining))
                 roll = roll + 1
 
-
             else:
-                print("you win this turn, scoring " + str(potential_score) + " pts")
+                print("You win this turn, your score " + str(potential_score) + " pts")
                 return value, potential_score
             dice_remaining = dice_remaining - nbr_scoring
             if dice_remaining<1:
                 return value, potential_score
             if nbr_scoring == 0:
                 print(
-                    "roll#" + str(roll) + " : " + str(nbr_scoring) + " scoring dices scoring " + str(
+                    "Roll#" + str(roll) + " : " + str(nbr_scoring) + " scoring dices scoring " + str(
                         value[0]) + ", potential total turn score " + str(
                         potential_score) + ", remaining dice to roll : " + str(
                         dice_remaining))
-                print("you lose this turn and a potential to score "+str(potential_score)+" pts")
+                print("You lose this turn and a potential to score "+str(potential_score)+" pts")
                 return value, potential_score
 
-    return value, potential_score
+        return value, potential_score
 
 def ranking_final_score(score_dict):
     sort_score_dict = sorted(score_dict.items(), key=operator.itemgetter(1), reverse=True)
@@ -165,18 +138,17 @@ def ranking_final_score(score_dict):
 
 def game_start():
     list_player = set_player()
-    # global_score=[0] * len(list_player)
-    global_score= {}
-    max_score =0
+    global_score = {}
+    max_score = 0
     index_turn = 1
-    while max_score < DEFAULT_TARGET_SCORE :
-        indexplayer =0
-        score_final_turn =0
+    while max_score < DEFAULT_TARGET_SCORE:
+        indexplayer = 0
+        score_final_turn = 0
         score_dict = {}
         score = [0] * len(list_player)
-        print("trun #"+str(index_turn))
+        print("Turn #"+str(index_turn))
         for name in list_player:
-             score_player= lauch_dice(name)
+             score_player = launch_dice(name)
              score[indexplayer] = score_player[0]
              score_final_turn = score_final_turn + score_player[1]
              score_dict[name] = score_final_turn
@@ -189,20 +161,5 @@ def game_start():
 
 
     print(ranking_final_score(global_score))
-
-
-
-
-
-
-
-
-
-
-
-# for i in players:
-#    input(i + "  tap for roll ")
-#   print(i, analyse_score(roll_dice_set(5)))
-
 
 game_start()
