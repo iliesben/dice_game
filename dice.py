@@ -31,6 +31,8 @@ BONUS_VALUE_FOR_ACE_BONUS = 1000
 BONUS_VALUE_FOR_NORMAL_BONUS = 100
 # Threshold of the triggering for bonus in term of occurrence of the same slide value
 THRESHOLD_BONUS = 3
+#Maximum roll for playing
+GAME_MAX_ROLL = 5
 # ----------------------------------------------------------------------------------------------------------------------
 
 import random
@@ -93,17 +95,24 @@ def set_score(indexplayer):
 
 def lauch_dice(name):
     value = 0
+    dice_remaining = GAME_MAX_ROLL
     #print("turn #" + i" --> " + name+" rank #" + rank + ", score " + value)
     while True:
+        while (dice_remaining>0):
+            response = input("\n" + name + " tap y or yes for roll dice! you have "+str(dice_remaining)+"roll again\n").lower()
+            if response in ['y', 'yes']:
+                dice_value_occurrence_list = roll_dice_set(DEFAULT_DICES_NB)
+                value = analyse_score(dice_value_occurrence_list)
+                print(value)
+            else:
+                print("Thanks for playing, Next Player!")
+                return value
+            dice_remaining = dice_remaining - 1
+            if dice_remaining<1:
+                print("Thanks next!")
+                return value
 
-        response = input("\n" + name + " tap y or yes for roll dice!\n").lower()
-        if response in ['y', 'yes']:
-            dice_value_occurrence_list = roll_dice_set(DEFAULT_DICES_NB)
-            value = analyse_score(dice_value_occurrence_list)
-            print(value)
-        else:
-            print("Thanks for playing, Next Player!")
-            return value
+            #dice_remaining=dice_remaining + nbr_scoring_dice()
     return value
 
 
