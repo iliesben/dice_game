@@ -146,9 +146,8 @@ def lauch_dice(name):
 
 def ranking_final_score_str(score_dict):
     str_score = "total score : "
-    for name_player, player_score in score_dict.items():
-        print(type("% s" % player_score))
-        str_score += name_player + "--> " + player_score + " , "
+    for score in score_dict:
+        str_score += score[0] + "--> " + str(score[1]) + " , "
     return str_score
 
 
@@ -174,8 +173,8 @@ def game_start():
          indexplayer += 1
 
 
-    ranking_final_score_str(score_dict)
-    print(ranking_final_score_str(ranking_final_score_str(score_dict)))
+    ranking_final_score(score_dict)
+    print(ranking_final_score_str(ranking_final_score(score_dict)))
 
 
 
