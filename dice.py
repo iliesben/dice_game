@@ -36,7 +36,7 @@ GAME_MAX_ROLL = 5
 
 
 # ----------------------------------------------------------------------------------------------------------------------
-
+import operator
 import random
 
 
@@ -154,22 +154,13 @@ def lauch_dice(name):
 
     return value, potential_score
 
-def ranking_final_score_str(score_dict):
+def ranking_final_score(score_dict):
+    sort_score_dict = sorted(score_dict.items(), key=operator.itemgetter(1), reverse=True)
+
     str_score = "total score : "
-
-    print("score_dict :" , score_dict)
-    for score in score_dict:
-        str_score += score[0] + "--> " + str(score[1]) + " , "
+    for player, score in sort_score_dict:
+        str_score += player + " --> " + str(score) + " , "
     return str_score
-
-
-import operator
-def ranking_final_score(player_turn_dict):
-
-    sort_score_dict = sorted(player_turn_dict.items(), key=operator.itemgetter(1), reverse=True)
-
-    return sort_score_dict
-
 
 
 def game_start():
@@ -197,9 +188,7 @@ def game_start():
         index_turn = index_turn+1
 
 
-
-    #ranking_final_score(global_score)
-    #print(ranking_final_score_str(global_score))
+    print(ranking_final_score(global_score))
 
 
 
