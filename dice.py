@@ -33,6 +33,8 @@ BONUS_VALUE_FOR_NORMAL_BONUS = 100
 THRESHOLD_BONUS = 3
 #Maximum roll for playing
 GAME_MAX_ROLL = 5
+
+
 # ----------------------------------------------------------------------------------------------------------------------
 
 import random
@@ -43,7 +45,9 @@ def roll_dice_set(nb_dice_to_roll):
     dice_value_occurrence_list = [0] * NB_DICE_SIDE
     for n in range(nb_dice_to_roll):
         dice_value = random.randint(1, NB_DICE_SIDE)
+        print(dice_value)
         dice_value_occurrence_list[dice_value - 1] += 1
+    DICE_LIST = dice_value_occurrence_list
     return dice_value_occurrence_list
 
 
@@ -93,28 +97,49 @@ def set_player():
 def set_score(indexplayer):
     return 0
 
+
+def nbr_scoring_dice(dice_value_list):
+
+    print(type(dice_value_list))
+    nbr_scoring_dice = 0
+
+   # score = 0
+    for scoring_value, scoring_multiplier in zip(LIST_SCORING_DICE_VALUE, LIST_SCORING_MULTIPLIER):
+        if (dice_value_list[scoring_value - 1] * scoring_multiplier>0):
+            nbr_scoring_dice += 1
+    for side_value_index, dice_value_occurrence in enumerate(dice_value_list):
+        nb_of_bonus = dice_value_occurrence // THRESHOLD_BONUS
+        nbr_scoring_dice = nbr_scoring_dice + nb_of_bonus
+    return nbr_scoring_dice
+
+
+
+
 def lauch_dice(name):
     value = 0
     dice_remaining = GAME_MAX_ROLL
+    nbr_scoring=0
     #print("turn #" + i" --> " + name+" rank #" + rank + ", score " + value)
     while True:
         while (dice_remaining>0):
-            response = input("\n" + name + " tap y or yes for roll dice! you have "+str(dice_remaining)+"roll again\n").lower()
+            response = input("\n" + name + " tap y or yes for roll dice! you have "+str(dice_remaining)+" roll again\n").lower()
             if response in ['y', 'yes']:
                 dice_value_occurrence_list = roll_dice_set(DEFAULT_DICES_NB)
+                nbr_scoring=nbr_scoring_dice(dice_value_occurrence_list)
                 value = analyse_score(dice_value_occurrence_list)
+
                 print(value)
+                print(nbr_scoring)
             else:
                 print("Thanks for playing, Next Player!")
                 return value
-            dice_remaining = dice_remaining - 1
+            dice_remaining = dice_remaining - nbr_scoring
             if dice_remaining<1:
                 print("Thanks next!")
                 return value
 
             #dice_remaining=dice_remaining + nbr_scoring_dice()
     return value
-
 
 
 def game_start():
