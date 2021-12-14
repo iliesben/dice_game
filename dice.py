@@ -45,7 +45,7 @@ def roll_dice_set(nb_dice_to_roll):
     dice_value_occurrence_list = [0] * NB_DICE_SIDE
     for n in range(nb_dice_to_roll):
         dice_value = random.randint(1, NB_DICE_SIDE)
-        print(dice_value)
+
         dice_value_occurrence_list[dice_value - 1] += 1
     DICE_LIST = dice_value_occurrence_list
     return dice_value_occurrence_list
@@ -100,7 +100,7 @@ def set_score(indexplayer):
 
 def nbr_scoring_dice(dice_value_list):
 
-    print(type(dice_value_list))
+
     nbr_scoring_dice = 0
 
    # score = 0
@@ -116,6 +116,7 @@ def nbr_scoring_dice(dice_value_list):
 
 
 def lauch_dice(name):
+    roll = 1
     potential_score =0
     value = 0
     dice_remaining = GAME_MAX_ROLL
@@ -123,29 +124,34 @@ def lauch_dice(name):
     #print("turn #" + i" --> " + name+" rank #" + rank + ", score " + value)
     while True:
         while (dice_remaining>0):
-            response = input("\n" + name + " tap y or yes for roll dice! you have "+str(dice_remaining)+" roll again\n").lower()
+            response = input("\n" + name + " tap y or yes for roll dice! you have").lower()
             if response in ['y', 'yes']:
                 dice_value_occurrence_list = roll_dice_set(DEFAULT_DICES_NB)
                 nbr_scoring=nbr_scoring_dice(dice_value_occurrence_list)
                 value = analyse_score(dice_value_occurrence_list)
-                print(value)
-                potential_score = potential_score + value[0]
-                print(potential_score)
-            else:
-                print("Thanks for playing, Next Player!")
 
+                potential_score = potential_score + value[0]
+                print(
+                    "roll#" + str(roll) + " : " + str(nbr_scoring) + " scoring dices scoring " + str(value[0]) + ", potential total turn score " + str(potential_score) + ", remaining dice to roll : " + str(
+                        dice_remaining))
+                roll = roll + 1
+
+
+            else:
+                print("you win this turn, scoring " + str(potential_score) + " pts")
                 return value, potential_score
             dice_remaining = dice_remaining - nbr_scoring
             if dice_remaining<1:
-                print("Thanks next!")
-
                 return value, potential_score
             if nbr_scoring == 0:
-                potential_score =0
+                print(
+                    "roll#" + str(roll) + " : " + str(nbr_scoring) + " scoring dices scoring " + str(
+                        value[0]) + ", potential total turn score " + str(
+                        potential_score) + ", remaining dice to roll : " + str(
+                        dice_remaining))
+                print("you lose this turn and a potential to score "+str(potential_score)+" pts")
                 return value, potential_score
 
-    print(potential_score)
-            #dice_remaining=dice_remaining + nbr_scoring_dice()
     return value, potential_score
 
 def ranking_final_score_str(score_dict):
@@ -166,19 +172,30 @@ def ranking_final_score(player_turn_dict):
 
 def game_start():
     list_player = set_player()
-    indexplayer =0
-    score_dict = {}
-    score = [0] * len(list_player)
+    global_score=[0] * len(list_player)
+    max_score =0
+    index_turn = 1
+    while max_score < DEFAULT_TARGET_SCORE :
+        indexplayer =0
+        score_final_turn =0
+        score_dict = {}
+        score = [0] * len(list_player)
+        print("trun #"+str(index_turn))
+        for name in list_player:
+             score_player= lauch_dice(name)
+             score[indexplayer] = score_player[0]
+             score_final_turn = score_final_turn + score_player[1]
+             score_dict[name] = score_final_turn
+             global_score[indexplayer] = global_score[indexplayer] + score_final_turn
+             max_score = global_score[indexplayer]
+             print(max_score)
+             indexplayer += 1
+        index_turn = index_turn+1
 
-    for name in list_player:
-         score_player= lauch_dice(name)
-         score[indexplayer] = score_player[0]
-         score_dict[name] = score_player[1]
-         indexplayer += 1
 
 
-    ranking_final_score(score_dict)
-    print(ranking_final_score_str(ranking_final_score(score_dict)))
+    #ranking_final_score(global_score)
+    #print(ranking_final_score_str(global_score))
 
 
 
