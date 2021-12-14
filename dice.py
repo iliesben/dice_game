@@ -156,6 +156,8 @@ def lauch_dice(name):
 
 def ranking_final_score_str(score_dict):
     str_score = "total score : "
+
+    print("score_dict :" , score_dict)
     for score in score_dict:
         str_score += score[0] + "--> " + str(score[1]) + " , "
     return str_score
@@ -172,7 +174,8 @@ def ranking_final_score(player_turn_dict):
 
 def game_start():
     list_player = set_player()
-    global_score=[0] * len(list_player)
+    # global_score=[0] * len(list_player)
+    global_score= {}
     max_score =0
     index_turn = 1
     while max_score < DEFAULT_TARGET_SCORE :
@@ -186,9 +189,10 @@ def game_start():
              score[indexplayer] = score_player[0]
              score_final_turn = score_final_turn + score_player[1]
              score_dict[name] = score_final_turn
-             global_score[indexplayer] = global_score[indexplayer] + score_final_turn
-             max_score = global_score[indexplayer]
-             print(max_score)
+             global_score[name] = global_score[name] + score_final_turn if name in global_score else score_final_turn
+             max_score = global_score[name]
+             print("global_score : ", global_score)
+             print("max_score : ", max_score)
              indexplayer += 1
         index_turn = index_turn+1
 
