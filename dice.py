@@ -116,6 +116,7 @@ def nbr_scoring_dice(dice_value_list):
 
 
 def lauch_dice(name):
+    potential_score =0
     value = 0
     dice_remaining = GAME_MAX_ROLL
     nbr_scoring=0
@@ -127,22 +128,25 @@ def lauch_dice(name):
                 dice_value_occurrence_list = roll_dice_set(DEFAULT_DICES_NB)
                 nbr_scoring=nbr_scoring_dice(dice_value_occurrence_list)
                 value = analyse_score(dice_value_occurrence_list)
-
                 print(value)
-                print(nbr_scoring)
+                potential_score = potential_score + value[0]
+                print(potential_score)
             else:
                 print("Thanks for playing, Next Player!")
-                return value
+
+                return value, potential_score
             dice_remaining = dice_remaining - nbr_scoring
             if dice_remaining<1:
                 print("Thanks next!")
-                return value
+
+                return value, potential_score
             if nbr_scoring == 0:
-                return value
+                potential_score =0
+                return value, potential_score
 
-
+    print(potential_score)
             #dice_remaining=dice_remaining + nbr_scoring_dice()
-    return value
+    return value, potential_score
 
 def ranking_final_score_str(score_dict):
     str_score = "total score : "
@@ -169,7 +173,7 @@ def game_start():
     for name in list_player:
          score_player= lauch_dice(name)
          score[indexplayer] = score_player[0]
-         score_dict[name] = score_player[0]
+         score_dict[name] = score_player[1]
          indexplayer += 1
 
 
