@@ -92,6 +92,7 @@ def launch_dice(name):
     value = 0
     dice_remaining = GAME_MAX_ROLL
     nbr_scoring = 0
+    numberRoll = 0
     while True:
         while (dice_remaining>0):
             response = input("\n" + name + " tap [y] or [yes] for roll dice! ").lower()
@@ -101,6 +102,7 @@ def launch_dice(name):
                 value = analyse_score(dice_value_occurrence_list)
 
                 potential_score = potential_score + value[0]
+                numberRoll+=1
                 print(
                     "roll#" + str(roll) + " : " + str(nbr_scoring) + " scoring dices scoring " + str(value[0]) + ", potential total turn score " + str(potential_score) + ", remaining dice to roll : " + str(
                         dice_remaining))
@@ -108,10 +110,10 @@ def launch_dice(name):
 
             else:
                 print("You win this turn, your score " + str(potential_score) + " pts")
-                return value, potential_score
+                return value, potential_score,numberRoll
             dice_remaining = dice_remaining - nbr_scoring
             if dice_remaining<1:
-                return value, potential_score
+                return value, potential_score,numberRoll
             if nbr_scoring == 0:
                 print(
                     "Roll#" + str(roll) + " : " + str(nbr_scoring) + " scoring dices scoring " + str(
@@ -119,24 +121,25 @@ def launch_dice(name):
                         potential_score) + ", remaining dice to roll : " + str(
                         dice_remaining))
                 print("You lose this turn and a potential to score "+str(potential_score)+" pts")
-                return value, potential_score
+                return value, potential_score,numberRoll
 
-        return value, potential_score
+        return value, potential_score,numberRoll
 
 def ranking_final_score(score_dict):
     sort_score_dict = sorted(score_dict.items(), key=operator.itemgetter(1), reverse=True)
-
     str_score = "total score : "
     for player, score in sort_score_dict:
-        str_score += player + " --> " + str(score) + " , "
+        str_score += player + " scoring " + str(score) + " in "
     return str_score
 
 
 def game_start():
     list_player = set_player()
     global_score = {}
+    total_roll={}
     max_score = 0
     index_turn = 1
+    roll = 0
     while max_score < DEFAULT_TARGET_SCORE:
         indexplayer = 0
         score_final_turn = 0
@@ -148,10 +151,14 @@ def game_start():
              score[indexplayer] = score_player[0]
              score_final_turn = score_final_turn + score_player[1]
              score_dict[name] = score_final_turn
-             global_score[name] = global_score[name] + score_final_turn if name in global_score else score_final_turn
+             roll+= score_player[2]
+             global_score[name] = global_score[name] + score_final_turn  if name in global_score else score_final_turn
+             total_roll[name] = total_roll
              max_score = global_score[name]
              print("global_score : ", global_score)
              print("max_score : ", max_score)
+             print("total_roll : ", total_roll[name])
+
              indexplayer += 1
         index_turn = index_turn+1
 
