@@ -148,7 +148,7 @@ def launch_dice(name,global_score):
                 potential_score = potential_score + value[0]
                 dice_remaining = dice_remaining - nbr_scoring
                 scoring = value[0]
-                display_scoring = (
+                print (
                   "Roll #" + str(roll) + " : " + str(nbr_scoring)
                   + " scoring dices " + str(scoring_dice)
                   + " scoring " + str(scoring)
@@ -157,7 +157,6 @@ def launch_dice(name,global_score):
                 )
                 if global_score[name] + scoring if name in global_score else scoring > DEFAULT_TARGET_SCORE:
                     return value, potential_score
-                print(display_scoring)
                 roll = roll + 1
             else:
                 print("You win this turn, your score " + str(potential_score) + " pts")
