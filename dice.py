@@ -81,12 +81,10 @@ def analyse_bonus_score(dice_value_occurrence_list):
 def scoring_dices(dice_value_occurrence_list):
   scoring_dice = []
 
-  for list_scoring_dice_value in LIST_SCORING_DICE_VALUE:
-      if dice_value_occurrence_list[list_scoring_dice_value - 1] > 0 and dice_value_occurrence_list[list_scoring_dice_value - 1] < THRESHOLD_BONUS :
-        scoring_dice += [(dice_value_occurrence_list[list_scoring_dice_value - 1], list_scoring_dice_value)]
-
   for dice_index, dice_value in enumerate(dice_value_occurrence_list):
       if dice_value >= THRESHOLD_BONUS:
+          scoring_dice += [(dice_value, dice_index + 1)]
+      elif dice_index + 1 in LIST_SCORING_DICE_VALUE and dice_value > 0:
           scoring_dice += [(dice_value, dice_index + 1)]
 
   return scoring_dice
