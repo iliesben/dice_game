@@ -1,5 +1,5 @@
 # Target total score to win by default
-DEFAULT_TARGET_SCORE = 2000
+DEFAULT_TARGET_SCORE = 1000
 
 # Number of dices by default in the set
 DEFAULT_DICES_NB = 5
@@ -22,29 +22,17 @@ GAME_MAX_ROLL = 5
 
 # ----------------------------------------------------------------------------------------------------------------------
 
-#stats global variables
+# stats global variables
 
 
-
-
-
-
-
-#François win !  scoring 2150 in 12 roll with 1 full roll, 3 bonus and 400 potential points lost
-
-
-
-
+# François win !  scoring 2150 in 12 roll with 1 full roll, 3 bonus and 400 potential points lost
 
 
 # ----------------------------------------------------------------------------------------------------------------------
 
 
-
 import operator
 import random
-
-
 
 
 class statistical_dice_game:
@@ -52,14 +40,14 @@ class statistical_dice_game:
     max_turn_scoring = 0
     longest_turn = 0
     max_turn_loss = 0
-    mean_scoring_turn=0
+    mean_scoring_turn = 0
     max_scoring_turn = 0
-    mean_noscoring_turn=0
-    max_noscoring_turn=0
+    mean_noscoring_turn = 0
+    max_noscoring_turn = 0
 
 
 def displaystats(stats):
-    return print("mais la "+str(stats.max_game_turn))
+    return print("mais la " + str(stats.max_game_turn))
 
 
 # return a list of dices value occurrence for a roll of nb_dice_to_roll dices
@@ -90,16 +78,18 @@ def analyse_bonus_score(dice_value_occurrence_list):
 
     return score, dice_value_occurrence_list
 
+
 def scoring_dices(dice_value_occurrence_list):
-  scoring_dice = []
+    scoring_dice = []
 
-  for dice_index, dice_value in enumerate(dice_value_occurrence_list):
-      if dice_value >= THRESHOLD_BONUS:
-          scoring_dice += [(dice_value, dice_index + 1)]
-      elif dice_index + 1 in LIST_SCORING_DICE_VALUE and dice_value > 0:
-          scoring_dice += [(dice_value, dice_index + 1)]
+    for dice_index, dice_value in enumerate(dice_value_occurrence_list):
+        if dice_value >= THRESHOLD_BONUS:
+            scoring_dice += [(dice_value, dice_index + 1)]
+        elif dice_index + 1 in LIST_SCORING_DICE_VALUE and dice_value > 0:
+            scoring_dice += [(dice_value, dice_index + 1)]
 
-  return scoring_dice
+    return scoring_dice
+
 
 # return a standard score and dice value occurence
 def analyse_standard_score(dice_value_occurrence_list):
@@ -117,6 +107,7 @@ def analyse_score(dice_value_occurrence_list):
     standard_score, dice_value_occurrence_list = analyse_standard_score(dice_value_occurrence_list)
 
     return bonus_score + standard_score, dice_value_occurrence_list
+
 
 # returns the list of players
 def set_player():
@@ -141,17 +132,19 @@ def nbr_scoring_dice(dice_value_list):
 
 
 # launch dice
-def launch_dice(name,global_score):
+def launch_dice(name, global_score):
     roll = 1
     potential_score = 0
     value = 0
+    scoring = 0
     dice_remaining = GAME_MAX_ROLL
     nbr_scoring = 0
+    global_current_score_player = 0
     while True:
-        while (dice_remaining > 0):
-            response = input( name + " tap [y] or [yes] for roll dice! ").lower()
+        while dice_remaining > 0:
+            response = input(name + " tap [y] or [yes] for roll dice! ").lower()
             if response in ['y', 'yes']:
-               # global_score[name] = global_score[name] + score_final_turn if name in global_score else score_final_turn
+                # global_score[name] = global_score[name] + score_final_turn if name in global_score else score_final_turn
                 dice_value_occurrence_list = roll_dice_set(DEFAULT_DICES_NB)
                 scoring_dice = scoring_dices(dice_value_occurrence_list)
                 nbr_scoring = nbr_scoring_dice(dice_value_occurrence_list)
@@ -159,15 +152,14 @@ def launch_dice(name,global_score):
                 potential_score = potential_score + value[0]
                 dice_remaining = dice_remaining - nbr_scoring
                 scoring = value[0]
-                print (
-                  "Roll #" + str(roll) + " : " + str(nbr_scoring)
-                  + " scoring dices " + str(scoring_dice)
-                  + " scoring " + str(scoring)
-                  + ", potential total turn score " + str(potential_score)
-                  + ", remaining dice to roll : " + str(dice_remaining)
+                global_current_score_player = global_score[name] + scoring if name in global_score else scoring
+                print(
+                    "Roll #" + str(roll) + " : " + str(nbr_scoring)
+                    + " scoring dices " + str(scoring_dice)
+                    + " scoring " + str(scoring)
+                    + ", potential total turn score " + str(potential_score)
+                    + ", remaining dice to roll : " + str(dice_remaining)
                 )
-                if (global_score[name] + scoring if name in global_score else scoring) > DEFAULT_TARGET_SCORE:
-                    return value, potential_score
                 roll = roll + 1
             else:
                 print("You win this turn, your score " + str(potential_score) + " pts")
@@ -181,45 +173,49 @@ def launch_dice(name,global_score):
                 return value, potential_score
         return value, potential_score
 
+
 # return the final ranking score for all players in the game
 def ranking_final_score(score_dict):
     return sorted(score_dict.items(), key=operator.itemgetter(1), reverse=True)
 
     # total score
-   # str_score = "total score : "
-   # classment_score = ""
 
-    #for count, (player, score) in enumerate(sort_score_dict):
-     # str_score += player + " --> " + str(score) + " , "
-     # if(count == 0):
-     #   classment_score += player + " win ! scoring " + str(score) + "\n"
-     # else :
-     #   classment_score += player + " lose ! scoring " + str(score) + "\n"
 
-    #print(str_score)
-    #print("Game in " + str(index_turn) + " turns")
-    #print(classment_score)
+# str_score = "total score : "
+# classment_score = ""
+
+# for count, (player, score) in enumerate(sort_score_dict):
+# str_score += player + " --> " + str(score) + " , "
+# if(count == 0):
+#   classment_score += player + " win ! scoring " + str(score) + "\n"
+# else :
+#   classment_score += player + " lose ! scoring " + str(score) + "\n"
+
+# print(str_score)
+# print("Game in " + str(index_turn) + " turns")
+# print(classment_score)
 
 # init global score of each player
-def init_global_score(list_player) :
-  global_score = {}
+def init_global_score(list_player):
+    global_score = {}
 
-  for name in list_player:
-    global_score[name] = 0
+    for name in list_player:
+        global_score[name] = 0
 
-  return global_score
+    return global_score
+
 
 # display global score of each player
-def display_global_score(global_score) :
-  total_score = "total score : "
-  for name in global_score :
-    total_score += name + ' --> ' + str(global_score[name]) + ' '
+def display_global_score(global_score):
+    total_score = "total score : "
+    for name in global_score:
+        total_score += name + ' --> ' + str(global_score[name]) + ' '
 
-  return total_score
+    return total_score
+
 
 # launch the game
 def menu_dice_game():
-
     stats_dice_game = {"max_game_turn": 0,
                        "max_turn_scoring": 0,
                        "longest_turn": 0,
@@ -229,7 +225,7 @@ def menu_dice_game():
                        "mean_noscoring_turn": 0,
                        "max_noscoring_turn": 0
                        }
-    stats_player_roll ={}
+    stats_player_roll = {}
     stats_player_loss = {}
     stats_player_bonus = {}
 
@@ -242,19 +238,21 @@ def menu_dice_game():
         indexplayer = 0
         score_dict = {}
         score = [0] * len(list_player)
-        print("\n"+"Turn #" + str(index_turn))
+        print("\n" + "Turn #" + str(index_turn))
         # player turn
         for name in list_player:
-             score_final_turn = 0
-             score_player = launch_dice(name,global_score)
-             score[indexplayer] = score_player[0]
-             score_final_turn = score_final_turn + score_player[1]
-             score_dict[name] = score_final_turn
-             global_score[name] = global_score[name] + score_final_turn if name in global_score else score_final_turn
-             max_score = global_score[name]
-             indexplayer += 1
-             print(display_global_score(global_score))
-            # end player turn
+            score_final_turn = 0
+            score_player = launch_dice(name, global_score)
+            score[indexplayer] = score_player[0]
+            score_final_turn = score_final_turn + score_player[1]
+            score_dict[name] = score_final_turn
+            global_score[name] = global_score[name] + score_final_turn if name in global_score else score_final_turn
+            max_score = global_score[name]
+            if global_score[name] > DEFAULT_TARGET_SCORE:
+                return print("END GAME")
+            indexplayer += 1
+            print(display_global_score(global_score))
+        # end player turn
         index_turn = index_turn + 1
         stats_dice_game["max_game_turn"] = index_turn
         # end game turn
@@ -262,17 +260,14 @@ def menu_dice_game():
     print(stats_dice_game)
 
 
-def display_stat(stats_dice_game,final_rating):
-    #for name, score in final_rating.items():
-        #print(name+" scoring "+ str(score)+"in "+stats_player_roll[name]+" roll with 1 full roll, "+stats_player_bonus[name]+" bonus and "+stats_player_loss[name]+" potential points lost")
+def display_stat(stats_dice_game, final_rating):
+    # for name, score in final_rating.items():
+    # print(name+" scoring "+ str(score)+"in "+stats_player_roll[name]+" roll with 1 full roll, "+stats_player_bonus[name]+" bonus and "+stats_player_loss[name]+" potential points lost")
 
-    #print(list(final_rating.keys())[0])
-    print("Game in "+stats_dice_game["max_game_turn"]+" turn(s)")
-
-
+    # print(list(final_rating.keys())[0])
+    print("Game in " + stats_dice_game["max_game_turn"] + " turn(s)")
 
 
 # Start
 
 menu_dice_game()
-
