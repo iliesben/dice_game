@@ -190,11 +190,27 @@ def ranking_final_score(score_dict, index_turn):
     print("Game in " + str(index_turn) + " turns")
     print(classment_score)
 
+# init global score of each player
+def init_global_score(list_player) :
+  global_score = {}
+
+  for name in list_player:
+    global_score[name] = 0
+
+  return global_score
+
+# display global score of each player
+def display_global_score(global_score) :
+  total_score = "total score : "
+  for name in global_score :
+    total_score += name + ' --> ' + str(global_score[name]) + ' '
+
+  return total_score
 
 # launch the game
 def menu_dice_game():
     list_player = set_player()
-    global_score = {}
+    global_score = init_global_score(list_player)
     max_score = 0
     index_turn = 1
     while max_score < DEFAULT_TARGET_SCORE:
@@ -212,11 +228,13 @@ def menu_dice_game():
              score_dict[name] = score_final_turn
              global_score[name] = global_score[name] + score_final_turn if name in global_score else score_final_turn
              max_score = global_score[name]
-             print("global_score : ", global_score)
              indexplayer += 1
-        # end player turn
+             print(display_global_score(global_score))
+            # end player turn
+
         index_turn = index_turn + 1
         # end game turn
+
     print(ranking_final_score(global_score, index_turn))
 
 # Start
