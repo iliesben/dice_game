@@ -54,9 +54,11 @@ import random
 
 # return a list of dices value occurrence for a roll of nb_dice_to_roll dices
 def roll_dice_set(nb_dice_to_roll):
+    dice_roll = [0] * NB_DICE_SIDE
     dice_value_occurrence_list = [0] * NB_DICE_SIDE
     for n in range(nb_dice_to_roll):
         dice_value = random.randint(1, NB_DICE_SIDE)
+        dice_roll[dice_value - 1] += 1
         dice_value_occurrence_list[dice_value - 1] += 1
     return dice_value_occurrence_list
 
@@ -129,7 +131,7 @@ def nbr_scoring_dice(dice_value_list):
 
 
 # launch dice
-def launch_dice(name):
+def launch_dice(name,global_score):
     roll = 1
     potential_score = 0
     value = 0
@@ -147,14 +149,16 @@ def launch_dice(name):
                 dice_remaining = dice_remaining - nbr_scoring
 
                 scoring = value[0]
+                myval = global_score[name] = global_score[name] + scoring if name in global_score else scoring
 
+                if myval> DEFAULT_TARGET_SCORE:
+                    return value, potential_score
                 display_scoring = (
                   "Roll #" + str(roll) + " : " + str(nbr_scoring)
-                  + " scoring dices" + str(scoring_dice)
-                  + str(nbr_scoring) + " scoring "
-                  + str(scoring) + ", potential total turn score "
-                  + str(potential_score) + ", remaining dice to roll : "
-                  + str(dice_remaining)
+                  + " scoring dices " + str(scoring_dice)
+                  + " scoring " + str(scoring)
+                  + ", potential total turn score " + str(potential_score)
+                  + ", remaining dice to roll : " + str(dice_remaining)
                 )
 
                 print(display_scoring)
@@ -167,6 +171,7 @@ def launch_dice(name):
             if nbr_scoring == 0:
                 # print(display_scoring)
                 print("You lose this turn and a potential to score " + str(potential_score) + " pts")
+                value = 0
                 return value, potential_score
         return value, potential_score
 
@@ -205,7 +210,7 @@ def menu_dice_game():
         # player turn
         for name in list_player:
              score_final_turn = 0
-             score_player = launch_dice(name)
+             score_player = launch_dice(name,global_score)
              score[indexplayer] = score_player[0]
              score_final_turn = score_final_turn + score_player[1]
              score_dict[name] = score_final_turn
