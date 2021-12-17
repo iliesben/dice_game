@@ -147,12 +147,7 @@ def launch_dice(name,global_score):
                 value = analyse_score(dice_value_occurrence_list)
                 potential_score = potential_score + value[0]
                 dice_remaining = dice_remaining - nbr_scoring
-
                 scoring = value[0]
-                myval = global_score[name] = global_score[name] + scoring if name in global_score else scoring
-
-                if myval> DEFAULT_TARGET_SCORE:
-                    return value, potential_score
                 display_scoring = (
                   "Roll #" + str(roll) + " : " + str(nbr_scoring)
                   + " scoring dices " + str(scoring_dice)
@@ -160,7 +155,8 @@ def launch_dice(name,global_score):
                   + ", potential total turn score " + str(potential_score)
                   + ", remaining dice to roll : " + str(dice_remaining)
                 )
-
+                if global_score[name] + scoring if name in global_score else scoring > DEFAULT_TARGET_SCORE:
+                    return value, potential_score
                 print(display_scoring)
                 roll = roll + 1
             else:
