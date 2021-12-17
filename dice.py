@@ -174,7 +174,6 @@ def menu_dice_game():
         print("Turn #" + str(index_turn))
         # player turn
         for name in list_player:
-            global_score[name] = 0
             score_final_turn = 0
             score_player = launch_dice(name)
             score[indexplayer] = score_player[0]
