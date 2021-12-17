@@ -1,5 +1,5 @@
 # Target total score to win by default
-DEFAULT_TARGET_SCORE = 1000
+DEFAULT_TARGET_SCORE = 2000
 
 # Number of dices by default in the set
 DEFAULT_DICES_NB = 5
@@ -34,14 +34,14 @@ class statistical_dice_game:
     max_noscoring_turn = 0
 
 
-""" 
+"""
 Return a list of dices value occurrence for a roll of nb_dice_to_roll dices
 
 Parameters
 ----------
 nb_dice_to_roll: int
     Number of dice to roll
-    
+
 Returns
 -------
 list
@@ -59,7 +59,7 @@ def roll_dice_set(nb_dice_to_roll):
     return dice_value_occurrence_list
 
 
-""" 
+"""
 Return a bonus score and the new dice value occurrence without the bonus elements
 Parameters
 ----------
@@ -93,7 +93,7 @@ def analyse_bonus_score(dice_value_occurrence_list):
     return score, dice_value_occurrence_list
 
 
-""" 
+"""
 Return value of scoring dice
 Parameters
 ----------
@@ -156,7 +156,7 @@ Returns
 -------
 int
     Bonus score
-    
+
 int
     Score standard
 
@@ -227,7 +227,7 @@ name: string
 
 global_score: int
     Global score of player on this round
-    
+
 Returns
 -------
 value
@@ -294,25 +294,19 @@ Undefined
 """
 
 
-def ranking_final_score(score_dict):
-    return sorted(score_dict.items(), key=operator.itemgetter(1), reverse=True)
+def ranking_final_score(score_dict, index_turn):
+  sort_score_dict = sorted(score_dict.items(), key=operator.itemgetter(1), reverse=True)
 
-    # total score
+  classment_score = ""
+  for count, (player, score) in enumerate(sort_score_dict):
+    if(count == 0):
+      classment_score += player + " win ! scoring " + str(score) + "\n"
+    else :
+      classment_score += player + " lose ! scoring " + str(score) + "\n"
 
+  print("Game in " + str(index_turn) + " turn(s)")
+  print(classment_score)
 
-# str_score = "total score : "
-# classment_score = ""
-
-# for count, (player, score) in enumerate(sort_score_dict):
-# str_score += player + " --> " + str(score) + " , "
-# if(count == 0):
-#   classment_score += player + " win ! scoring " + str(score) + "\n"
-# else :
-#   classment_score += player + " lose ! scoring " + str(score) + "\n"
-
-# print(str_score)
-# print("Game in " + str(index_turn) + " turns")
-# print(classment_score)
 
 
 """
@@ -321,7 +315,7 @@ Parameters
 ----------
 list_player: list
     List of player
-    
+
 Returns
 -------
 global_score
@@ -354,8 +348,10 @@ total_score
 
 def display_global_score(global_score):
     total_score = "total score : "
-    for name in global_score:
-        total_score += name + ' --> ' + str(global_score[name]) + ' '
+    global_score_sorted = sorted(global_score.items(), key=operator.itemgetter(1), reverse=True)
+
+    for name, score in global_score_sorted:
+        total_score += name + ' --> ' + str(score) + ' '
 
     return total_score
 
@@ -405,15 +401,16 @@ def launch_game():
             score_dict[name] = score_final_turn
             global_score[name] = global_score[name] + score_final_turn if name in global_score else score_final_turn
             max_score = global_score[name]
+            print(display_global_score(global_score))
             if global_score[name] > DEFAULT_TARGET_SCORE:
+                ranking_final_score(global_score, stats_dice_game["max_game_turn"])
                 return print("END GAME")
             indexplayer += 1
-            print(display_global_score(global_score))
         # end player turn
         index_turn = index_turn + 1
         stats_dice_game["max_game_turn"] = index_turn
         # end game turn
-    final_rating = ranking_final_score(global_score)
+    ranking_final_score(global_score, stats_dice_game["max_game_turn"])
     print(stats_dice_game)
 
 
@@ -429,15 +426,5 @@ Returns
 print stats of dice game
 """
 
-
-def display_stat(stats_dice_game, final_rating):
-    # for name, score in final_rating.items():
-    # print(name+" scoring "+ str(score)+"in "+stats_player_roll[name]+" roll with 1 full roll, "+stats_player_bonus[name]+" bonus and "+stats_player_loss[name]+" potential points lost")
-
-    # print(list(final_rating.keys())[0])
-    print("Game in " + stats_dice_game["max_game_turn"] + " turn(s)")
-
-
-# Start
 
 launch_game()
