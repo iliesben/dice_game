@@ -106,7 +106,6 @@ def set_player():
 # returns number of scoring dice
 def nbr_scoring_dice(dice_value_list):
     nbr_scoring_dice = 0
-
     for scoring_value, scoring_multiplier in zip(LIST_SCORING_DICE_VALUE, LIST_SCORING_MULTIPLIER):
         if dice_value_list[scoring_value - 1] * scoring_multiplier > 0:
             nbr_scoring_dice += 1
@@ -130,7 +129,6 @@ def launch_dice(name):
                 dice_value_occurrence_list = roll_dice_set(DEFAULT_DICES_NB)
                 nbr_scoring = nbr_scoring_dice(dice_value_occurrence_list)
                 value = analyse_score(dice_value_occurrence_list)
-
                 potential_score = potential_score + value[0]
                 dice_remaining = dice_remaining - nbr_scoring
                 print(
@@ -139,11 +137,9 @@ def launch_dice(name):
                         potential_score) + ", remaining dice to roll : " + str(
                         dice_remaining))
                 roll = roll + 1
-
             else:
                 print("You win this turn, your score " + str(potential_score) + " pts")
                 return value, potential_score
-
             if dice_remaining < 1:
                 return value, potential_score
             if nbr_scoring == 0:
@@ -154,14 +150,11 @@ def launch_dice(name):
                         dice_remaining))
                 print("You lose this turn and a potential to score " + str(potential_score) + " pts")
                 return value, potential_score
-
         return value, potential_score
-
 
 # return the final ranking score for all players in the game
 def ranking_final_score(score_dict):
     sort_score_dict = sorted(score_dict.items(), key=operator.itemgetter(1), reverse=True)
-
     str_score = "total score : "
     for player, score in sort_score_dict:
         str_score += player + " --> " + str(score) + " , "
