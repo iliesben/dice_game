@@ -20,20 +20,8 @@ THRESHOLD_BONUS = 3
 # Maximum roll for playing
 GAME_MAX_ROLL = 5
 
-# ----------------------------------------------------------------------------------------------------------------------
-
-# stats global variables
-
-
-# François win !  scoring 2150 in 12 roll with 1 full roll, 3 bonus and 400 potential points lost
-
-
-# ----------------------------------------------------------------------------------------------------------------------
-
-
 import operator
 import random
-
 
 class statistical_dice_game:
     max_game_turn = 0
@@ -46,11 +34,21 @@ class statistical_dice_game:
     max_noscoring_turn = 0
 
 
-def displaystats(stats):
-    return print("mais la " + str(stats.max_game_turn))
+""" 
+Return a list of dices value occurrence for a roll of nb_dice_to_roll dices
+
+Parameters
+----------
+nb_dice_to_roll: int
+    Number of dice to roll
+    
+Returns
+-------
+list
+    List of occurrence of dice value
+"""
 
 
-# return a list of dices value occurrence for a roll of nb_dice_to_roll dices
 def roll_dice_set(nb_dice_to_roll):
     dice_roll = [0] * NB_DICE_SIDE
     dice_value_occurrence_list = [0] * NB_DICE_SIDE
@@ -61,7 +59,23 @@ def roll_dice_set(nb_dice_to_roll):
     return dice_value_occurrence_list
 
 
-# return a bonus score and the new dice value occurrence without the bonus elements
+""" 
+Return a bonus score and the new dice value occurrence without the bonus elements
+Parameters
+----------
+dice_value_occurrence_list: list
+    List of occurrence dice value
+
+Returns
+-------
+int
+    Score bonus
+
+list
+    Dice value occurrence without the bonus elements
+"""
+
+
 def analyse_bonus_score(dice_value_occurrence_list):
     score = 0
     scoring_dices_bonus = []
@@ -79,6 +93,20 @@ def analyse_bonus_score(dice_value_occurrence_list):
     return score, dice_value_occurrence_list
 
 
+""" 
+Return value of scoring dice
+Parameters
+----------
+dice_value_occurrence_list: list
+    List of occurrence dice value
+
+Returns
+-------
+list
+    Scoring dice
+"""
+
+
 def scoring_dices(dice_value_occurrence_list):
     scoring_dice = []
 
@@ -91,7 +119,23 @@ def scoring_dices(dice_value_occurrence_list):
     return scoring_dice
 
 
-# return a standard score and dice value occurence
+"""
+Return a standard score and dice value occurence
+Parameters
+----------
+dice_value_occurrence_list: list
+    List of occurrence dice value
+
+Returns
+-------
+int
+    Score standard
+
+list
+    Dice value occurrence without the bonus elements and standard score.
+"""
+
+
 def analyse_standard_score(dice_value_occurrence_list):
     score = 0
     for scoring_value, scoring_multiplier in zip(LIST_SCORING_DICE_VALUE, LIST_SCORING_MULTIPLIER):
@@ -101,7 +145,26 @@ def analyse_standard_score(dice_value_occurrence_list):
     return score, dice_value_occurrence_list
 
 
-# returns the global score of the dice set and dice value occurence
+"""
+Returns the global score of the dice set and dice value occurrence
+Parameters
+----------
+dice_value_occurrence_list: list
+    List of occurrence dice value
+
+Returns
+-------
+int
+    Bonus score
+    
+int
+    Score standard
+
+list
+    Dice value occurrence without the bonus elements and standard score.
+"""
+
+
 def analyse_score(dice_value_occurrence_list):
     bonus_score, dice_value_occurrence_list = analyse_bonus_score(dice_value_occurrence_list)
     standard_score, dice_value_occurrence_list = analyse_standard_score(dice_value_occurrence_list)
@@ -109,7 +172,18 @@ def analyse_score(dice_value_occurrence_list):
     return bonus_score + standard_score, dice_value_occurrence_list
 
 
-# returns the list of players
+"""
+Returns the list of players
+Parameters
+----------
+
+Returns
+-------
+list
+    List of player
+"""
+
+
 def set_player():
     players = int(input("Enter number of players:""\n", ))
     player_list = []
@@ -119,7 +193,20 @@ def set_player():
     return player_list
 
 
-# returns number of scoring dice
+"""
+Returns number of scoring dice
+Parameters
+----------
+dice_value_occurrence_list: list
+    List of occurrence dice value
+
+Returns
+-------
+int
+    Number scoring dice
+"""
+
+
 def nbr_scoring_dice(dice_value_list):
     nbr_scoring_dice = 0
     for scoring_value, scoring_multiplier in zip(LIST_SCORING_DICE_VALUE, LIST_SCORING_MULTIPLIER):
@@ -131,7 +218,26 @@ def nbr_scoring_dice(dice_value_list):
     return nbr_scoring_dice
 
 
-# launch dice
+"""
+Function to start a game round
+Parameters
+----------
+name: string
+    Name of player round
+
+global_score: int
+    Global score of player on this round
+    
+Returns
+-------
+value
+    Number scoring dice
+
+potential_score
+    Global score of player on this round
+"""
+
+
 def launch_dice(name, global_score):
     roll = 1
     potential_score = 0
@@ -174,7 +280,20 @@ def launch_dice(name, global_score):
         return value, potential_score
 
 
-# return the final ranking score for all players in the game
+"""
+Return the final ranking score for all players in the game
+Parameters
+----------
+score_dict: dict
+    Dictionary of scoring
+
+Returns
+-------
+Undefined
+    Dictionary of scoring
+"""
+
+
 def ranking_final_score(score_dict):
     return sorted(score_dict.items(), key=operator.itemgetter(1), reverse=True)
 
@@ -195,7 +314,21 @@ def ranking_final_score(score_dict):
 # print("Game in " + str(index_turn) + " turns")
 # print(classment_score)
 
-# init global score of each player
+
+"""
+Init global score of each player
+Parameters
+----------
+list_player: list
+    List of player
+    
+Returns
+-------
+global_score
+    Global score of each player
+"""
+
+
 def init_global_score(list_player):
     global_score = {}
 
@@ -205,7 +338,20 @@ def init_global_score(list_player):
     return global_score
 
 
-# display global score of each player
+"""
+Display global score of each player
+Parameters
+----------
+global_score: int
+    Global score of each player
+
+Returns
+-------
+total_score
+    Global score of all player
+"""
+
+
 def display_global_score(global_score):
     total_score = "total score : "
     for name in global_score:
@@ -214,8 +360,19 @@ def display_global_score(global_score):
     return total_score
 
 
-# launch the game
-def menu_dice_game():
+"""
+Function for start the game
+Parameters
+----------
+
+Returns
+-------
+stats_dice_game
+    Print the stat of dice game
+"""
+
+
+def launch_game():
     stats_dice_game = {"max_game_turn": 0,
                        "max_turn_scoring": 0,
                        "longest_turn": 0,
@@ -260,6 +417,19 @@ def menu_dice_game():
     print(stats_dice_game)
 
 
+"""
+Function for display stat of game
+Parameters
+----------
+stats_dice_game: int
+    Stats of dice game
+
+Returns
+-------
+print stats of dice game
+"""
+
+
 def display_stat(stats_dice_game, final_rating):
     # for name, score in final_rating.items():
     # print(name+" scoring "+ str(score)+"in "+stats_player_roll[name]+" roll with 1 full roll, "+stats_player_bonus[name]+" bonus and "+stats_player_loss[name]+" potential points lost")
@@ -270,4 +440,4 @@ def display_stat(stats_dice_game, final_rating):
 
 # Start
 
-menu_dice_game()
+launch_game()
