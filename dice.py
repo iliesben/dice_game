@@ -74,7 +74,7 @@ def set_player():
         player_list.append(name)
     return player_list
 
-
+# returns number of scoring dice
 def nbr_scoring_dice(dice_value_list):
     nbr_scoring_dice = 0
 
@@ -86,6 +86,7 @@ def nbr_scoring_dice(dice_value_list):
         nbr_scoring_dice = nbr_scoring_dice + nb_of_bonus
     return nbr_scoring_dice
 
+# launch dice
 def launch_dice(name):
     roll = 1
     potential_score = 0
@@ -101,6 +102,7 @@ def launch_dice(name):
                 value = analyse_score(dice_value_occurrence_list)
 
                 potential_score = potential_score + value[0]
+                dice_remaining = dice_remaining - nbr_scoring
                 print(
                     "roll#" + str(roll) + " : " + str(nbr_scoring) + " scoring dices scoring " + str(value[0]) + ", potential total turn score " + str(potential_score) + ", remaining dice to roll : " + str(
                         dice_remaining))
@@ -109,7 +111,7 @@ def launch_dice(name):
             else:
                 print("You win this turn, your score " + str(potential_score) + " pts")
                 return value, potential_score
-            dice_remaining = dice_remaining - nbr_scoring
+
             if dice_remaining<1:
                 return value, potential_score
             if nbr_scoring == 0:
@@ -123,6 +125,7 @@ def launch_dice(name):
 
         return value, potential_score
 
+# return the final ranking score for all players in the game
 def ranking_final_score(score_dict):
     sort_score_dict = sorted(score_dict.items(), key=operator.itemgetter(1), reverse=True)
 
@@ -144,6 +147,7 @@ def game_start():
         score = [0] * len(list_player)
         print("Turn #"+str(index_turn))
         for name in list_player:
+             global_score[name] = 0
              score_player = launch_dice(name)
              score[indexplayer] = score_player[0]
              score_final_turn = score_final_turn + score_player[1]
@@ -151,7 +155,6 @@ def game_start():
              global_score[name] = global_score[name] + score_final_turn if name in global_score else score_final_turn
              max_score = global_score[name]
              print("global_score : ", global_score)
-             print("max_score : ", max_score)
              indexplayer += 1
         index_turn = index_turn+1
 
