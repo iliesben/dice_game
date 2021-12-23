@@ -1,8 +1,6 @@
 # Dice game web
 
-Foobar is a Python library for dealing with word pluralization.
 
-pluralization.
 
 ## Installation
 
