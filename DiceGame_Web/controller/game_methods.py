@@ -1,13 +1,13 @@
 from random import random
-import models.player as Player
 import utils.constants as params
+from models.player import Player
 
 
 def add_player():
     number_of_players = int(input("Enter number of players:\n", ))
     player_list = []
     for _ in range(number_of_players):
-        name_player = input("Enter your name:\n", )
+        name_player: str = input("Enter your name:\n", )
         player_list.append(Player(name_player))
     return player_list
 
@@ -51,3 +51,7 @@ def analyse_score(dice_value_occurrence_list, player):
     player.score = bonus_score + standard_score
 
     return bonus_score + standard_score, dice_value_occurrence_list
+
+
+def ranking(player):
+    return dict(sorted(player.items(), key=lambda item: item["score"]))

@@ -6,53 +6,47 @@ class Player:
         self.bonus_count = 0
         self.lost_count = 0
         self.roll_count = 0
-        self._full_roll_count = 0
+        self.full_roll_count = 0
+        self.is_winning = False
 
-    @property
-    def name(self) -> str:
-        return self._name
+    def get_name(self) -> str:
+        return self.name
 
-    @name.setter
-    def name(self, value):
-        self._name = value
+    def set_name(self, value):
+        self.name = value
 
-    @property
-    def score(self) -> str:
+    def get_score(self) -> int:
         return self.score
 
-    @name.setter
-    def score(self, value):
+    def set_score(self, value):
         self.score = value
 
-    @property
-    def bonus_count(self) -> int:
-        return self._score
+    def get_bonus_count(self) -> int:
+        return self.bonus_count
 
-    @bonus_count.setter
-    def bonus_count(self, value):
-        self._bonus_count = value
+    def set_bonus_count(self, value):
+        self.bonus_count = value
 
-    @property
-    def lost_points(self) -> int:
-        return self._lost_count
+    def get_lost_points(self) -> int:
+        return self.lost_count
 
-    @lost_points.setter
-    def lost_points(self, value):
-        self._lost_points = value
+    def set_lost_points(self, value):
+        self.lost_count = value
 
-    @property
-    def roll_count(self) -> int:
-        return self._roll_count
+    def get_roll_count(self) -> int:
+        return self.roll_count
 
-    @roll_count.setter
-    def roll_count(self, value):
-        self._roll_count = value
+    def set_roll_count(self, value):
+        self.roll_count = value
 
-    @property
-    def full_roll_count(self) -> int:
-        return self._full_roll_count
+    def get_full_roll_count(self) -> int:
+        return self.full_roll_count
 
-    @full_roll_count.setter
-    def full_roll_count(self, value):
-        self._full_roll_count = value
+    def set_full_roll_count(self, value):
+        self.full_roll_count = value
 
+    def is_winning(self) -> bool:
+        return self.is_winning
+
+    def is_winning(self, value):
+        self.is_winning = value
