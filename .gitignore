@@ -152,3 +152,9 @@ cython_debug/
 .idea/
 .DS_Store/
 .DS_Store
+
+DiceGame_Web/utils/__init__.py
+
+DiceGame_Web/controller/__init__.py
+
+DiceGame_Web/models/__init__.py
