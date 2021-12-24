@@ -56,11 +56,3 @@ class Player:
     def full_roll_count(self, value):
         self._full_roll_count = value
 
-
-def add_player():
-    players = int(input("Enter number of players:""\n", ))
-    player_list = []
-    for _ in range(players):
-        name = input("Enter your name:""\n", )
-        player_list.append(Player(name))
-    return player_list
