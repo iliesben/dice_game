@@ -70,7 +70,7 @@ def game_turn(current_player, is_interactive=True):
     while roll_again:
         # generate the dice roll and compute the scoring
         dice_value_occurrence = game.roll_dice_set(remaining_dice_to_roll)
-        roll_score = game.analyse_score(dice_value_occurrence)
+        roll_score = game.analyse_score(dice_value_occurrence, current_player)
         remaining_dice_to_roll = sum(roll_score['non_scoring_dice'])
         current_player['nb_of_roll'] += 1
 

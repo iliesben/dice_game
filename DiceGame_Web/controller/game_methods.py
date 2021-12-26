@@ -1,4 +1,4 @@
-from random import random
+import random
 import utils.constants as params
 from models.player import Player
 
@@ -52,6 +52,22 @@ def analyse_score(dice_value_occurrence_list, player):
 
     return bonus_score + standard_score, dice_value_occurrence_list
 
-
 def ranking(player):
     return dict(sorted(player.items(), key=lambda item: item["score"]))
+
+def occurrence_list_to_str(dice_value_occurrence):
+    """ convert dice occurrence in string
+            :parameters dice_value_occurrence
+            :returns    string in format [Dice Side]xNb of Occurrence
+    """
+
+    if sum(dice_value_occurrence) == 0:
+        # no occurrence for all dice value
+        return '[]'
+
+    occurrence_str = ''
+    for side_value_index, side_value_occurrence in enumerate(dice_value_occurrence):
+        if side_value_occurrence > 0:
+            occurrence_str += '[' + str(side_value_index + 1) + ']' + 'x' + str(side_value_occurrence) + ', '
+
+    return occurrence_str

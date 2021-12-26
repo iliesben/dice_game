@@ -1,4 +1,7 @@
 from flask import Flask
+import controller.player_methods as Player_methods
+import controller.game_methods as Game_methods
+import models.player as Player
 
 app = Flask(__name__)
 
