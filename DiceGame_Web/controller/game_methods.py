@@ -1,6 +1,9 @@
 import random
+import operator
 import utils.constants as params
 from models.player import Player
+import controller.player_methods as player
+import controller.score_methods as score
 
 
 def add_player():
@@ -12,62 +15,68 @@ def add_player():
     return player_list
 
 
-def roll_dice_set(player):
-    print(f"{player.name} roll dice")
-    dice_value_occurrence_list = [0] * params.NB_DICE_SIDE
-    for _ in range(params.DEFAULT_DICES_NB):
-        dice_value = random.randint(1, params.NB_DICE_SIDE)
-        dice_value_occurrence_list[dice_value - 1] += 1
-    return dice_value_occurrence_list
+def init_global_score(list_player):
+    global_score = {}
+
+    for name in list_player:
+        global_score[name] = 0
+
+    return global_score
 
 
-def analyse_bonus_score(dice_value_occurrence_list):
-    score = 0
-    for side_value_index, dice_value_occurrence in enumerate(dice_value_occurrence_list):
-        nb_of_bonus = dice_value_occurrence // params.THRESHOLD_BONUS
-        if nb_of_bonus > 0:
-            if side_value_index == 0:
-                bonus_multiplier = params.BONUS_VALUE_FOR_ACE_BONUS
-            else:
-                bonus_multiplier = params.BONUS_VALUE_FOR_NORMAL_BONUS
-            score += nb_of_bonus * bonus_multiplier * (side_value_index + 1)
-            dice_value_occurrence_list[side_value_index] %= params.THRESHOLD_BONUS
+def display_global_score(global_score):
+    total_score = "total score : "
+    global_score_sorted = sorted(global_score.items(), key=operator.itemgetter(1), reverse=True)
+    print(global_score_sorted)
 
-    return score, dice_value_occurrence_list
+    for name, score in global_score_sorted:
+        total_score += name + ' --> ' + str(score) + ' '
+
+    return total_score
 
 
-def analyse_standard_score(dice_value_occurrence_list):
-    score = 0
-    for scoring_value, scoring_multiplier in zip(params.LIST_SCORING_DICE_VALUE, params.LIST_SCORING_MULTIPLIER):
-        score += dice_value_occurrence_list[scoring_value - 1] * scoring_multiplier
-        dice_value_occurrence_list[scoring_value - 1] = 0
+def launch_game():
+    stats_dice_game = {"max_game_turn": 0,
+                       "max_turn_scoring": 0,
+                       "longest_turn": 0,
+                       "max_turn_loss": 0,
+                       "mean_scoring_turn": 0,
+                       "max_scoring_turn": 0,
+                       "mean_noscoring_turn": 0,
+                       "max_noscoring_turn": 0
+                       }
+    stats_player_roll = {}
+    stats_player_loss = {}
+    stats_player_bonus = {}
 
-    return score, dice_value_occurrence_list
+    list_player = add_player()
+    global_score = init_global_score(list_player)
+    max_score = 0
+    index_turn = 1
+    while max_score < params.DEFAULT_TARGET_SCORE:
+        # game turn
+        indexplayer = 0
+        score_dict = {}
+        score = [0] * len(list_player)
+        print("\n" + "Turn #" + str(index_turn))
+        # player turn
+        for name in list_player:
+            score_final_turn = 0
+            score_player = player.launch_dice(name, global_score)
+            score[indexplayer] = score_player[0]
+            score_final_turn = score_final_turn + score_player[1]
+            score_dict[name] = score_final_turn
+            global_score[name] = global_score[name] + score_final_turn if name in global_score else score_final_turn
+            max_score = global_score[name]
+            print(display_global_score(global_score))
+            if global_score[name] > params.DEFAULT_TARGET_SCORE:
+                score.ranking_final_score(global_score, stats_dice_game["max_game_turn"])
+                return print("END GAME")
+            indexplayer += 1
+        # end player turn
+        index_turn = index_turn + 1
+        stats_dice_game["max_game_turn"] = index_turn
+        # end game turn
+    score.ranking_final_score(global_score, stats_dice_game["max_game_turn"])
+    print(stats_dice_game)
 
-
-def analyse_score(dice_value_occurrence_list, player):
-    bonus_score, dice_value_occurrence_list = analyse_bonus_score(dice_value_occurrence_list)
-    standard_score, dice_value_occurrence_list = analyse_standard_score(dice_value_occurrence_list)
-    player.score = bonus_score + standard_score
-
-    return bonus_score + standard_score, dice_value_occurrence_list
-
-def ranking(player):
-    return dict(sorted(player.items(), key=lambda item: item["score"]))
-
-def occurrence_list_to_str(dice_value_occurrence):
-    """ convert dice occurrence in string
-            :parameters dice_value_occurrence
-            :returns    string in format [Dice Side]xNb of Occurrence
-    """
-
-    if sum(dice_value_occurrence) == 0:
-        # no occurrence for all dice value
-        return '[]'
-
-    occurrence_str = ''
-    for side_value_index, side_value_occurrence in enumerate(dice_value_occurrence):
-        if side_value_occurrence > 0:
-            occurrence_str += '[' + str(side_value_index + 1) + ']' + 'x' + str(side_value_occurrence) + ', '
-
-    return occurrence_str
