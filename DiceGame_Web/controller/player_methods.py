@@ -10,11 +10,18 @@ import controller.game_methods as game
 def lost_roll(current_player, turn_score):
     # lost roll
 
-    print('\n-->', current_player['name'], 'got zero point ', turn_score, 'lost points\n')
+    print('\n-->', Player.get_name(current_player), 'got zero point ', turn_score, 'lost points\n')
 
-    current_player['nb_of_non_scoring_turn'] += 1
-    current_player['lost_score'] += turn_score
+    # current_player['nb_of_non_scoring_turn'] += 1
+    non_scoring_turn = Player.get_nb_of_non_scoring_turn(current_player)
+    non_scoring_turn += 1
+    # print(non_scoring_turn)
 
+    # current_player['lost_score'] += turn_score
+    lost_score = Player.get_lost_score(current_player)
+    lost_score += turn_score
+    # print(lost_score)
+    
     roll_again = False
 
 def scoring_roll(turn_score, roll_score):
