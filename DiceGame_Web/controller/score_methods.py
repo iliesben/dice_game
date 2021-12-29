@@ -41,9 +41,9 @@ def ranking_final_score(score_dict, index_turn):
   classment_score = ""
   for count, (player, score) in enumerate(sort_score_dict):
     if(count == 0):
-      classment_score += player + " win ! scoring " + str(score) + "\n"
+      classment_score += Player.get_name(player) + " win ! scoring " + str(score) + "\n"
     else :
-      classment_score += player + " lose ! scoring " + str(score) + "\n"
+      classment_score += Player.get_name(player) + " lose ! scoring " + str(score) + "\n"
 
   print("Game in " + str(index_turn) + " turn(s)")
   print(classment_score)
