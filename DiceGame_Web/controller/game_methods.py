@@ -3,7 +3,7 @@ import operator
 import utils.constants as params
 from models.player import Player
 import controller.player_methods as player
-import controller.score_methods as score
+import controller.score_methods as score_methods
 
 
 def add_player():
@@ -27,10 +27,9 @@ def init_global_score(list_player):
 def display_global_score(global_score):
     total_score = "total score : "
     global_score_sorted = sorted(global_score.items(), key=operator.itemgetter(1), reverse=True)
-    print(global_score_sorted)
 
     for name, score in global_score_sorted:
-        total_score += name + ' --> ' + str(score) + ' '
+        total_score += Player.get_name(name) + ' --> ' + str(score) + ' '
 
     return total_score
 
@@ -68,15 +67,17 @@ def launch_game():
             score_dict[name] = score_final_turn
             global_score[name] = global_score[name] + score_final_turn if name in global_score else score_final_turn
             max_score = global_score[name]
+            print('global score ', global_score[name])
+            print('Stats dice game ', stats_dice_game["max_game_turn"])
             print(display_global_score(global_score))
             if global_score[name] > params.DEFAULT_TARGET_SCORE:
-                score.ranking_final_score(global_score, stats_dice_game["max_game_turn"])
+                score_methods.ranking_final_score(global_score, stats_dice_game["max_game_turn"])
                 return print("END GAME")
             indexplayer += 1
         # end player turn
         index_turn = index_turn + 1
         stats_dice_game["max_game_turn"] = index_turn
         # end game turn
-    score.ranking_final_score(global_score, stats_dice_game["max_game_turn"])
+    score_methods.ranking_final_score(global_score, stats_dice_game["max_game_turn"])
     print(stats_dice_game)
 
