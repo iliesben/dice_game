@@ -1,0 +1,5 @@
+{
+    "python.analysis.extraPaths": [
+        "./DiceGame_Web/controller"
+    ]
+}

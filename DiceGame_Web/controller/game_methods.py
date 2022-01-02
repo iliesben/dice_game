@@ -6,6 +6,10 @@ import controller.player_methods as player
 import controller.score_methods as score_methods
 
 
+
+def test():
+            return 'Game start'
+
 def add_player():
     number_of_players = int(input("Enter number of players:\n", ))
     player_list = []
