@@ -44,9 +44,6 @@ def launch_game():
                        "mean_noscoring_turn": 0,
                        "max_noscoring_turn": 0
                        }
-    stats_player_roll = {}
-    stats_player_loss = {}
-    stats_player_bonus = {}
 
     list_player = add_player()
     global_score = init_global_score(list_player)
@@ -61,7 +58,7 @@ def launch_game():
         # player turn
         for name in list_player:
             score_final_turn = 0
-            score_player = player.launch_dice(name, global_score)
+            score_player = player.launch_dice(name)
             score[indexplayer] = score_player[0]
             score_final_turn = score_final_turn + score_player[1]
             score_dict[name] = score_final_turn

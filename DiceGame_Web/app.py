@@ -10,15 +10,9 @@ app = Flask(__name__)
 
 
 @app.route('/')
-def hello_world():  # put application's code here
-    # print(list(Player.__dict__.keys()))
-    # player_one = Player("Julien")
+def dice_game():
     test = Game_methods.launch_game()
     print(test)
-    # player_two = Player("Thomas")
-    # turn_score_two = 0
-    # test_2 = Player_methods.lost_roll(player_two, turn_score_two)
-    # print(test_2)
     return 'Hello World!'
 
 

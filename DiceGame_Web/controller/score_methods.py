@@ -3,6 +3,7 @@ import operator
 import utils.constants as params
 from models.player import Player
 
+
 def analyse_bonus_score(dice_value_occurrence_list):
     score = 0
     for side_value_index, dice_value_occurrence in enumerate(dice_value_occurrence_list):
@@ -32,21 +33,21 @@ def analyse_score(dice_value_occurrence_list, player):
     standard_score, dice_value_occurrence_list = analyse_standard_score(dice_value_occurrence_list)
     player.score = bonus_score + standard_score
 
-    return bonus_score + standard_score, dice_value_occurrence_list
+    return bonus_score + standard_score
 
 
 def ranking_final_score(score_dict, index_turn):
-  sort_score_dict = sorted(score_dict.items(), key=operator.itemgetter(1), reverse=True)
+    sort_score_dict = sorted(score_dict.items(), key=operator.itemgetter(1), reverse=True)
 
-  classment_score = ""
-  for count, (player, score) in enumerate(sort_score_dict):
-    if(count == 0):
-      classment_score += Player.get_name(player) + " win ! scoring " + str(score) + "\n"
-    else :
-      classment_score += Player.get_name(player) + " lose ! scoring " + str(score) + "\n"
+    classment_score = ""
+    for count, (player, score) in enumerate(sort_score_dict):
+        if (count == 0):
+            classment_score += Player.get_name(player) + " win ! scoring " + str(score) + "\n"
+        else:
+            classment_score += Player.get_name(player) + " lose ! scoring " + str(score) + "\n"
 
-  print("Game in " + str(index_turn) + " turn(s)")
-  print(classment_score)
+    print("Game in " + str(index_turn) + " turn(s)")
+    print(classment_score)
 
 
 def ranking(player):

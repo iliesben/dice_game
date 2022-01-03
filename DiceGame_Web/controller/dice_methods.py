@@ -1,25 +1,23 @@
 import random
 import utils.constants as params
-from models.player import Player
 
-def roll_dice_set(player):
-    # print(f"{Player.get_name(player)} roll dice")
+
+def roll_dice_set():
     dice_value_occurrence_list = [0] * params.NB_DICE_SIDE
     for _ in range(params.DEFAULT_DICES_NB):
         dice_value = random.randint(1, params.NB_DICE_SIDE)
         dice_value_occurrence_list[dice_value - 1] += 1
     return dice_value_occurrence_list
 
+
 def scoring_dices(dice_value_occurrence_list):
     scoring_dice = []
 
     for dice_index, dice_value in enumerate(dice_value_occurrence_list):
-        if dice_value >= params.THRESHOLD_BONUS:
+        if (dice_value >= params.THRESHOLD_BONUS) or (dice_index + 1 in params.LIST_SCORING_DICE_VALUE and dice_value > 0) :
             scoring_dice += [(dice_value, dice_index + 1)]
-        elif dice_index + 1 in params.LIST_SCORING_DICE_VALUE and dice_value > 0:
-            scoring_dice += [(dice_value, dice_index + 1)]
-
     return scoring_dice
+
 
 def nbr_scoring_dice(dice_value_list):
     nbr_scoring_dice = 0
