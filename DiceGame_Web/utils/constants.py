@@ -1,5 +1,5 @@
 # Target total score to win by default
-DEFAULT_TARGET_SCORE = 2000
+DEFAULT_TARGET_SCORE = 1000
 
 # Number of dices by default in the set
 DEFAULT_DICES_NB = 5
