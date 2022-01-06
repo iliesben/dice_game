@@ -37,8 +37,7 @@ def dice_game():
     """
     game = Game()
     game.launch_game()
-    print(game)
-    
+
     return 'Hello World!'
 
 
