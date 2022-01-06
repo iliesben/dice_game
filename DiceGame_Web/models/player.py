@@ -2,6 +2,7 @@ import utils.constants as params
 # import controller.score_methods as score_methods
 from models.dice import Dice
 
+
 class Player:
 
     def __init__(self, name):
@@ -19,32 +20,22 @@ class Player:
         self.is_winning = False
 
     def launch_dice(self):
-        # roll = 1
-        # potential_score = 0
-        # scoring = 0
+
         dice_remaining = params.GAME_MAX_ROLL
-        # nbr_scoring = 0
+
         while dice_remaining > 0:
             response = input(self.name + " tap [y] or [yes] for roll dice! ").lower()
             if response in ['y', 'yes']:
-
                 dice = Dice()
                 dice_value_occurrence_list = dice.roll_dice_set()
                 scoring_dices = dice.scoring_dices()
                 nbr_scoring_dice = dice.nbr_scoring_dices()
-                # print(dice)
-                # print(scoring_dices)
-                # print(str(nbr_scoring_dice))
-
-                # dice_value_occurrence_list = Dice.roll_dice_set()
-                # scoring_dice = Dice.scoring_dices(dice_value_occurrence_list)
-                # nbr_scoring = Dice.nbr_scoring_dice(dice_value_occurrence_list)
-                
+                self.nb_of_roll += 1
                 self.analyse_score(dice_value_occurrence_list)
-                self.nb_of_potential_score = self.nb_of_potential_score + self.score
                 dice_remaining = dice_remaining - nbr_scoring_dice
                 if dice_remaining < 0:
                     dice_remaining = 0
+
                 print(
                     "Roll #" + str(self.nb_of_roll) + " : " + str(nbr_scoring_dice)
                     + " scoring dices " + str(scoring_dices)
@@ -52,16 +43,21 @@ class Player:
                     + ", potential total turn score " + str(self.nb_of_potential_score)
                     + ", remaining dice to roll : " + str(dice_remaining)
                 )
-                self.nb_of_roll += 1
+                print("nb roll = " + str(self.nb_of_roll) + " and lost turn " + str(self.nb_of_non_scoring_turn))
+
             else:
-                print("You win this turn, your score " + str(self.nb_of_potential_score) + " pts")
+                self.score = self.nb_of_potential_score
+                print("You win this turn, your score " + str(self.score) + " pts")
                 return self.score, self.nb_of_potential_score
+
             if dice_remaining < 1:
                 return self.score, self.nb_of_potential_score
+
             if nbr_scoring_dice == 0:
-                # print(display_scoring)
+                self.nb_of_non_scoring_turn += 1
                 print("You lose this turn and a potential to score " + str(self.nb_of_potential_score) + " pts")
                 self.score = 0
+                print("nb roll = " + str(self.nb_of_roll) + " and lost turn " + str(self.nb_of_non_scoring_turn))
                 return self.score, self.nb_of_potential_score
 
     def analyse_bonus_score(self, dice_value_occurrence_list):
@@ -89,9 +85,8 @@ class Player:
     def analyse_score(self, dice_value_occurrence_list):
         bonus_score, dice_value_occurrence_list = self.analyse_bonus_score(dice_value_occurrence_list)
         standard_score, dice_value_occurrence_list = self.analyse_standard_score(dice_value_occurrence_list)
-        self.score = bonus_score + standard_score
-
-        print('analyse score: ', self.score)
+        self.score += bonus_score + standard_score
+        self.nb_of_potential_score = self.nb_of_potential_score + self.score
 
         return self.score
 
@@ -116,8 +111,8 @@ class Player:
     def get_nb_of_roll(self) -> int:
         return self.nb_of_roll
 
-    def set_nb_of_roll(self, value):
-        self.nb_of_roll = value
+    def set_nb_of_roll(self):
+        self.nb_of_roll += 1
 
     def get_nb_of_turn(self) -> int:
         return self.nb_of_turn
