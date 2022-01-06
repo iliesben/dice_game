@@ -26,7 +26,6 @@ class Player:
         self.is_winning = False
 
     def launch_dice(self):
-        best_score=0
         roll = 0
         self.potential_score = 0
         dice_remaining = params.GAME_MAX_ROLL

@@ -39,12 +39,12 @@ class Game:
                     if player.best_scoring > app_stat.max_score else app_stat.max_score
                 app_stat.all_score += player.score
 
-                if player.score >= params.DEFAULT_TARGET_SCORE:
-                    return print("END GAME")
-
                 print(utils.parse_to_str(player.name) + " ton score est : " + utils.parse_to_str(player.score)
                       + " potential score est :" + utils.parse_to_str(player.potential_score)
                       + " best score est : " + utils.parse_to_str(player.best_scoring))
+
+                if player.potential_score >= params.DEFAULT_TARGET_SCORE:
+                    return print("END GAME")
 
     # def ranking_final_score(score_dict, index_turn):
     #     sort_score_dict = sorted(score_dict.items(), key=operator.itemgetter(1), reverse=True)
