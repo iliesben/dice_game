@@ -42,6 +42,7 @@ class Player:
                 self.nb_of_roll += 1
                 score_turn = self.analyse_score(dice_value_occurrence_list)
                 dice_remaining = dice_remaining - nbr_scoring_dice
+
                 if dice_remaining < 0:
                     dice_remaining = 0
 
@@ -52,14 +53,18 @@ class Player:
                     + ", potential total turn score " + utils.parse_to_str(self.potential_score)
                     + ", remaining dice to roll : " + utils.parse_to_str(dice_remaining)
                 )
+
                 self.best_scoring = score_turn if score_turn > self.best_scoring else self.best_scoring
-                print("ton score est " + utils.parse_to_str(score_turn))
-                print("ton potential score est " + utils.parse_to_str(self.potential_score))
-                print ("ton best score est "+ utils.parse_to_str(self.best_scoring))
+
+                if self.score + self.potential_score > params.DEFAULT_TARGET_SCORE:
+                    return self.score, self.potential_score
+
+
+
 
             else:
-                self.score = self.potential_score
-                print("You win this turn, your score " + utils.parse_to_str(self.score) + " pts")
+
+                print("You win this turn, your score " + utils.parse_to_str(self.potential_score) + " pts")
                 return self.score, self.potential_score
 
             if dice_remaining < 1:
@@ -71,7 +76,7 @@ class Player:
                 self.non_potential_score += self.potential_score
                 print("You lose this turn and a potential to score "
                       + utils.parse_to_str(self.potential_score) + " pts")
-                self.score = 0
+                score_turn = 0
                 return self.score, self.potential_score
 
     def analyse_bonus_score(self, dice_value_occurrence_list):
