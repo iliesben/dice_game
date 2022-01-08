@@ -4,6 +4,7 @@ from models.stats import Stats
 import utils.constants as params
 from models.player import Player
 from utils import utils
+from operator import attrgetter
 
 
 class Game:
@@ -13,6 +14,7 @@ class Game:
         self.player_list = []
         self.max_score = 0
         self.turn = 1
+        self.total_roll = 0
 
     def add_player(self):
         self.number_of_players = int(input("Enter number of players:\n", ))
@@ -31,6 +33,7 @@ class Game:
             # game turn
             print("\n" + "Turn #" + str(self.turn))
             # player turn
+
             for player in list_player:
 
                 score_of_player, potential_of_player = player.launch_dice()
@@ -39,10 +42,33 @@ class Game:
                 app_stat.max_score = player.best_scoring \
                     if player.best_scoring > app_stat.max_score else app_stat.max_score
                 app_stat.all_score += player.score
+                app_stat.nb_scoring += 1
+
+                app_stat.all_non_score += player.non_potential_score
+                if player.non_potential_score > 0:
+                    app_stat.all_non_score += player.non_potential_score
+
                 player.score += player.potential_score
+
+                print(self.resume_turn())
+                app_stat.best_player_score(list_player)
+                app_stat.best_longest_turn()
+                app_stat.best_turn_loss(list_player)
+                app_stat.mean_scoring_turn()
+                app_stat.mean_non_scoring_turn()
+
                 if player.score > params.DEFAULT_TARGET_SCORE:
+                    list_player.sort(key=attrgetter('score'), reverse=True)
                     return self.display_party()
             self.turn += 1
+
+
+    def resume_turn(self):
+        self.player_list.sort(key=attrgetter('score'), reverse=True)
+        message = "Total score : "
+        for player in self.player_list:
+            message += " " + player.name + "--> " + str(player.score)
+        return message
 
     def is_winner(self, player):
         text = "win !" if player.score > params.DEFAULT_TARGET_SCORE else "lose !"
@@ -50,7 +76,7 @@ class Game:
 
     def display_party(self):
         resume_player = ""
-        resume_turn = "Game in " + str(self.turn) + "turns"
+        resume_turn = "Game in " + str(self.turn) + " turns"
         for player in self.player_list:
             resume_player += "\n" + player.name + " " + self.is_winner(player) + "  scoring " + str(
                 player.score) + " in " \
