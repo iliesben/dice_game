@@ -12,6 +12,7 @@ class Game:
         self.number_of_players = 0
         self.player_list = []
         self.max_score = 0
+        self.turn = 1
 
     def add_player(self):
         self.number_of_players = int(input("Enter number of players:\n", ))
@@ -28,7 +29,7 @@ class Game:
 
         while self.max_score <= params.DEFAULT_TARGET_SCORE:
             # game turn
-            print("\n" + "Turn #" + str(index_turn))
+            print("\n" + "Turn #" + str(self.turn))
             # player turn
             for player in list_player:
 
@@ -40,12 +41,23 @@ class Game:
                 app_stat.all_score += player.score
                 player.score += player.potential_score
                 if player.score > params.DEFAULT_TARGET_SCORE:
-                    return print("END GAME")
+                    return self.display_party()
+            self.turn += 1
 
-                print(utils.parse_to_str(player.name) + " ton score est : " + utils.parse_to_str(player.score)
-                      + " potential score est :" + utils.parse_to_str(player.potential_score)
-                      + " best score est : " + utils.parse_to_str(player.best_scoring))
+    def is_winner(self, player):
+        text = "win !" if player.score > params.DEFAULT_TARGET_SCORE else "lose !"
+        return text
 
+    def display_party(self):
+        resume_player = ""
+        resume_turn = "Game in " + str(self.turn) + "turns"
+        for player in self.player_list:
+            resume_player += "\n" + player.name + " " + self.is_winner(player) + "  scoring " + str(
+                player.score) + " in " \
+                             + str(player.nb_of_roll) + " roll with " + str(player.nb_of_full_roll) + " full roll, " \
+                             + str(player.nb_bonus_score) + " bonus and " + str(
+                player.non_potential_score) + " potential points lost"
+        return print(resume_turn + resume_player)
 
     # def ranking_final_score(score_dict, index_turn):
     #     sort_score_dict = sorted(score_dict.items(), key=operator.itemgetter(1), reverse=True)
