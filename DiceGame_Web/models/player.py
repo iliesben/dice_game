@@ -62,6 +62,11 @@ class Player:
 
 
 
+                # if self.potential_score >= params.DEFAULT_TARGET_SCORE:
+                #     self.score = self.potential_score
+                #     print('Test score : ', self.score)
+                #     return self.score
+
             else:
 
                 print("You win this turn, your score " + utils.parse_to_str(self.potential_score) + " pts")
