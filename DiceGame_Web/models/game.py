@@ -44,6 +44,10 @@ class Game:
                 app_stat.all_score += player.score
                 app_stat.nb_scoring += 1
 
+                app_stat.longest_turn = player.nb_of_roll
+
+                app_stat.max_turn_loss += player.nb_of_non_scoring_turn
+
                 app_stat.all_non_score += player.non_potential_score
                 if player.non_potential_score > 0:
                     app_stat.all_non_score += player.non_potential_score
@@ -51,11 +55,14 @@ class Game:
                 player.score += player.potential_score
 
                 print(self.resume_turn())
-                app_stat.best_player_score(list_player)
-                app_stat.best_longest_turn()
-                app_stat.best_turn_loss(list_player)
-                app_stat.mean_scoring_turn()
-                app_stat.mean_non_scoring_turn()
+                app_stat.best_player_score(player)
+                print(app_stat.best_player_score(player))
+                app_stat.best_longest_turn(player)
+                print(app_stat.best_longest_turn(player))
+                app_stat.best_turn_loss(player)
+                print(app_stat.best_turn_loss(player))
+                # app_stat.mean_scoring_turn()
+                # app_stat.mean_non_scoring_turn()
 
                 if player.score > params.DEFAULT_TARGET_SCORE:
                     list_player.sort(key=attrgetter('score'), reverse=True)
