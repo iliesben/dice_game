@@ -35,6 +35,7 @@ class Game:
             # player turn
 
             for player in list_player:
+                print('Player : ', player.name)
 
                 score_of_player, potential_of_player = player.launch_dice()
                 self.max_score = score_of_player
@@ -43,10 +44,15 @@ class Game:
                     if player.best_scoring > app_stat.max_score else app_stat.max_score
                 app_stat.all_score += player.score
                 app_stat.nb_scoring += 1
+                print('Max Score test : ', player.best_scoring)
 
-                app_stat.longest_turn = player.nb_of_roll
+                app_stat.longest_turn = player.nb_of_roll \
+                    if player.nb_of_roll > app_stat.longest_turn else app_stat.longest_turn
+                print('Max longest_turn test : ', player.nb_of_roll)
 
-                app_stat.max_turn_loss += player.nb_of_non_scoring_turn
+                app_stat.max_turn_loss = player.nb_of_non_scoring_turn \
+                    if player.nb_of_non_scoring_turn > app_stat.max_turn_loss else app_stat.max_turn_loss
+                print('Max turn_loss test : ', player.nb_of_non_scoring_turn)
 
                 app_stat.all_non_score += player.non_potential_score
                 if player.non_potential_score > 0:
