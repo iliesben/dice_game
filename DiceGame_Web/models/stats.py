@@ -13,16 +13,16 @@ class Stats:
         self.nb_non_scoring = 0
         self.all_non_score = 0
 
-    def best_player_score(self, player):
+    def best_player_score(self, player, max_score):
         # best_player = list_player.sort(key=attrgetter('score'), reverse=True)
-        return "\nMax turn scoring : " + str(player.name) + " with " + str(self.max_score)
+        return "\nMax turn scoring : " + str(player.name) + " with " + str(max_score)
 
-    def best_longest_turn(self, player):
-        return "\nMax longest turn : " + str(player.name) + " with " + str(self.longest_turn)
+    def best_longest_turn(self, player, longest_turn):
+        return "\nMax longest turn : " + str(player.name) + " with " + str(longest_turn)
 
-    def best_turn_loss(self, player):
+    def best_turn_loss(self, player, max_turn_loss):
         # lost = list_player.sort(key=attrgetter('non_potential_score'), reverse=True)
-        return "\nMax turn loss : " + str(player.name) + " with " + str(self.max_turn_loss)
+        return "\nMax turn loss : " + str(player.name) + " with " + str(max_turn_loss)
 
     # def mean_no_scoring_turn(self):
     #     return " Mean scoring turn :" + str(self.all_score / self.nb_scoring) + "(" + str(self.nb_scoring) + " turns)"
