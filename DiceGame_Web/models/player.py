@@ -20,8 +20,10 @@ class Player:
         self.nb_bonus_score = 0
         self.potential_score = 0
         self.nb_of_roll = 0
+        self.nb_of_scoring_turn = 0
         self.nb_of_non_scoring_turn = 0
         self.non_potential_score = 0
+        self.max_non_potential_score = 0
         self.nb_of_full_roll = 0
         self.is_winning = False
 
@@ -57,32 +59,27 @@ class Player:
                 self.best_scoring = score_turn if score_turn > self.best_scoring else self.best_scoring
 
                 if self.score + self.potential_score > params.DEFAULT_TARGET_SCORE:
-                    return self.score, self.potential_score, roll
-
-
-
-
-                # if self.potential_score >= params.DEFAULT_TARGET_SCORE:
-                #     self.score = self.potential_score
-                #     print('Test score : ', self.score)
-                #     return self.score
+                    return self.score, self.potential_score, roll, nbr_scoring_dice
 
             else:
-
+                self.nb_of_scoring_turn += 1
                 print("You win this turn, your score " + utils.parse_to_str(self.potential_score) + " pts")
-                return self.score, self.potential_score, roll
+                return self.score, self.potential_score, roll, nbr_scoring_dice
 
             if dice_remaining < 1:
                 self.nb_of_full_roll += 1
-                return self.score, self.potential_score, roll
+                print("You win this turn, your score " + utils.parse_to_str(self.potential_score) + " pts")
+                return self.score, self.potential_score, roll, nbr_scoring_dice
 
             if nbr_scoring_dice == 0:
                 self.nb_of_non_scoring_turn += 1
                 self.non_potential_score += self.potential_score
+                self.max_non_potential_score = self.potential_score
+                print('Non potential score : ', self.non_potential_score)
                 print("You lose this turn and a potential to score "
                       + utils.parse_to_str(self.potential_score) + " pts")
                 score_turn = 0
-                return self.score, self.potential_score, roll
+                return self.score, self.potential_score, roll, nbr_scoring_dice
 
     def analyse_bonus_score(self, dice_value_occurrence_list):
         bonus_score = 0

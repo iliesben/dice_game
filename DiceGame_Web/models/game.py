@@ -37,36 +37,26 @@ class Game:
             for player in list_player:
                 print('Player : ', player.name)
 
-                score_of_player, potential_of_player, roll = player.launch_dice()
+                score_of_player, potential_of_player, roll, nbr_scoring_dice = player.launch_dice()
                 self.max_score = score_of_player
 
-                app_stat.max_score = player.best_scoring if player.best_scoring > app_stat.max_score else app_stat.max_score
-                app_stat.all_score += player.score
-                app_stat.nb_scoring += 1
-
                 app_stat.longest_turn = roll if roll > app_stat.longest_turn else app_stat.longest_turn
-
-                app_stat.max_turn_loss = player.non_potential_score if player.non_potential_score > app_stat.max_turn_loss else app_stat.max_turn_loss
-                print('Max score turn loss ', app_stat.max_turn_loss)
-                # print('Max turn_loss test : ', player.nb_of_non_scoring_turn)
-
-                app_stat.all_non_score += player.non_potential_score
-                if player.non_potential_score > 0:
-                    app_stat.all_non_score += player.non_potential_score
 
                 player.score += player.potential_score
 
                 print(self.resume_turn())
 
-                best_player_score = app_stat.best_player_score(player, app_stat.max_score)
-                best_longest_turn = app_stat.best_longest_turn(player, app_stat.longest_turn)
-                best_turn_loss = app_stat.best_turn_loss(player, app_stat.max_turn_loss)
-                # app_stat.mean_scoring_turn()
-                # app_stat.mean_non_scoring_turn()
+                best_player_score = app_stat.best_player_score(player)
+                best_longest_turn = app_stat.best_longest_turn(app_stat.longest_turn)
+                best_turn_loss = app_stat.best_turn_loss(player)
+                if nbr_scoring_dice == 0 :
+                    mean_no_scoring_turn = app_stat.mean_non_scoring_turn(player)
+                if nbr_scoring_dice != 0:
+                    mean_scoring_turn = app_stat.mean_scoring_turn(player)
 
                 if player.score > params.DEFAULT_TARGET_SCORE:
                     list_player.sort(key=attrgetter('score'), reverse=True)
-                    return self.display_party(), print(best_player_score), print(best_longest_turn), print(best_turn_loss)
+                    return self.display_party(), print(best_player_score), print(best_longest_turn), print(best_turn_loss), print(mean_no_scoring_turn), print(mean_scoring_turn)
             self.turn += 1
 
 
