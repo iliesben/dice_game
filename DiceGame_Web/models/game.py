@@ -16,16 +16,19 @@ class Game:
         self.turn = 1
         self.total_roll = 0
 
-    def add_player(self):
-        self.number_of_players = int(input("Enter number of players:\n", ))
-        for _ in range(self.number_of_players):
-            name_player: str = input("Enter your name:\n", )
-            self.player_list.append(Player(name_player))
+
+    def add_player(self,player_list):
+        # self.number_of_players = int(input("Enter number of players:\n", ))
+        # print(self.number_of_players)
+        # print(len(player_list))
+        for player in player_list:
+            # name_player: str = input("Enter your name:\n", )
+            self.player_list.append(Player(player))
         return self.player_list
 
-    def launch_game(self):
+    def launch_game(self,player_list):
 
-        list_player = self.add_player()
+        list_player = self.add_player(player_list)
         app_stat = Stats()
         index_turn = 1
 
