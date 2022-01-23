@@ -24,7 +24,19 @@ getbutton.addEventListener('click', () => {
             player_list: player_list
         })
     }).then((res) => {
-        console.log(res);
-    })
+        return res.json();
+    }).then(function(data) {
+        alert('Turn #'+ data.turn +' '+ 'Player :' + data.name );
+
+    //     fetch("/playerPlay", {
+    //     method: "POST",
+    //     headers: {
+    //         'Content-Type': 'application/json'
+    //     },
+    //     body: JSON.stringify({
+    //         player: data
+    //     })
+    // })
+    });
 
 });

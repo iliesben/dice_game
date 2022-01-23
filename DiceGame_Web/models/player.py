@@ -27,6 +27,10 @@ class Player:
         self.nb_of_full_roll = 0
         self.is_winning = False
 
+
+    def roll():
+        return 'roll'
+
     def launch_dice(self):
         roll = 0
         self.potential_score = 0

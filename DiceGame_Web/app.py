@@ -53,8 +53,27 @@ def index():  # put application's code here
 def numberplayer():
                     player_list = request.json.get("player_list")
                     game = Game()
-                    game.launch_game(player_list)
-                    return  'eee'
+                    gameLaunch = game.launch_game(player_list)
+                    print(gameLaunch)
+                    # request.post('127.0.0.1:5000', json={'id': 1, 'name': 'Jessa'})
+
+                    # return gameLaunch
+
+                    # launchGame =  Game_methods.launch_game(player_list)
+                    # return launchGame
+
+
+
+                    
+# @app.route('/playerPlay', methods=['POST'])
+# def play():
+#                     playerData = request.json.get("player")
+#                     print(playerData)
+#                     player = playerData()
+#                     playerGame = player.launch_dice(playerData)
+#                     # request.post('127.0.0.1:5000', json={'id': 1, 'name': 'Jessa'})
+
+#                     return playerGame
 
                     # launchGame =  Game_methods.launch_game(player_list)
                     # return launchGame

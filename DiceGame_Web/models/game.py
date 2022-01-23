@@ -35,10 +35,15 @@ class Game:
         while self.max_score <= params.DEFAULT_TARGET_SCORE:
             # game turn
             print("\n" + "Turn #" + str(self.turn))
+            
             # player turn
 
             for player in list_player:
                 print('Player : ', player.name)
+                playerTurn = dict()
+                playerTurn['name'] = player.name
+                playerTurn['turn'] = str(self.turn)
+                # return  playerTurn
 
                 score_of_player, potential_of_player, roll, nbr_scoring_dice = player.launch_dice()
                 self.max_score = score_of_player
